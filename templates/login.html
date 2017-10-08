@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"> </script>
+   <script src="//apis.google.com/js/platform.js?onload=start"> </script>
+   <script>
+   function signInCallback(authResult) {
+     if (authResult['code']) {
+       // Hide the sign-in button now that the user is authorized
+       $('#signinButton').attr('style', 'display: none');
+       // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the main restaurants page
+       $.ajax({
+         type: 'POST',
+         url: '/gconnect?state={{STATE}}',
+         processData: false,
+         data: authResult['code'],
+         contentType: 'application/octet-stream; charset=utf-8',
+         success: function(result) {
+           // Handle or verify the server response if necessary.
+            if (result) {
+                   var getUrl = window.location;
+                   var baseUrl = getUrl .protocol + "//" + getUrl.host;
+                   window.location = baseUrl;
+             } 
+          else if (authResult['error']) {
+       console.log('There was an error: ' + authResult['error']);
+     } else {
+           $('#result').html('Failed to log in.');
+            }
+         }
+         
+     }); } }
+
+   function signOut(){
+         $.ajax({
+           type: 'POST',
+           url: '/gdisconnect',
+           success: function(result) {
+             if (result) {
+                    var getUrl = window.location;
+                    var baseUrl = getUrl .protocol + "//" + getUrl.host;
+                    window.location = baseUrl;
+             } 
+           }
+       });
+    } 
+
+   </script>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}"> 
+ 
+ </head>
+ 
+ <body>
+     <div class="header">
+         <div class="header-contents">
+             <div class="header-name">
+                 Catalog App
+             </div>
+          <div id="signoutButton" class="login"
+           {% if session["username"] != null and session["username"] !=  "" %} 
+              style="display:table cell"
+           {% else %}
+              style="display:none"        
+           {% endif %}
+          >
+           <button style="width: 114px; height: 36px;" onClick="signOut()">Sign out </button>
+          </div>
+        </div>
+    </div>
+
+    <div class="contents">
+         <p>
+             Please login with your Google sign in:
+         </p><br><br>
+
+           <div id="signinButton" class="login">
+            <span class="g-signin"
+              data-scope="openid email"
+              data-clientid="970135820346-hcl6a32pjst379bc2l2i0kfjah8nd33k.apps.googleusercontent.com"
+              data-redirecturi="postmessage"
+              data-accesstype="offline"
+              data-cookiepolicy="single_host_origin"
+              data-callback="signInCallback"
+              data-approvalprompt="force">
+            </span>
+          </div>
+    </div>
+</body>
+</html>

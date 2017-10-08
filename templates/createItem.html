@@ -1,0 +1,35 @@
+{% extends "mainTemplate.html" %}
+{% block contents %}
+{% if session["username"] != null  %}
+
+    <div class="contents">
+        <div class = 'item'>   
+        {{msg}}
+        <form method = 'POST'>
+            <p>Title:</p>
+                <input type ='text' size='30' name='title'>
+            <p>Description:</p>
+                <input type ='text' size='50' name='description'>
+            <p>Category:</p>
+                <select name="category">
+                <option></option>
+                {% for category in catelog %}
+                    <option value="{{category.id}}">{{category.name}}</option>
+                {% endfor %}
+                </select>
+            <br><br>
+            <input type='submit' value='Submit'>
+        </form>
+        </div>
+    </div>
+
+{% else %}
+
+    <div class="contents">
+        <p>
+            You must be loged in to preform this feature
+        </p>
+     </div>
+
+{% endif %}
+{% endblock %}

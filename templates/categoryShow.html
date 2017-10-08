@@ -1,0 +1,20 @@
+{% extends "mainTemplate.html" %}
+{% block contents %}
+
+<div class="contents">
+    <div class = 'category'>
+        <h3>Categories</h3>
+        {% for category in catelog %}
+            <a href = "{{url_for('showCateogry', category_name = category.name)}}">{{category.name}}</a><br>
+        {% endfor %}
+    </div>
+    <div class = 'item'>
+        <h3> {{selectedName}} Items  ({{items.count()}} Items)</h3>
+        {% for item in items %}
+            <a href = "{{url_for('showDescription', category_name = selectedName , item_title =  item.title)}}">{{item.title}}
+             </a><br>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

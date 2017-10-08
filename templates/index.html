@@ -1,0 +1,26 @@
+{% extends "mainTemplate.html" %}
+{% block contents %}
+
+<div class="contents">
+    <div class = 'category'>
+        <h3>Category</h3>
+        {% for category in catelog %}
+            <a href = "{{url_for('showCateogry', category_name= category.name)}}">{{category.name}}</a><br>
+        {% endfor %}
+    </div>
+    <div class = 'item'>
+        {% if session["username"] != null  %}
+          <div class = "addItem">
+              <a href="{{url_for('newItem')}}">Add Item</a>
+          </div>
+        {% endif %}
+        <h3>Latest items </h3>
+        {% for item in items %}
+            <a href = "{{url_for('showDescription', category_name = item.category.name , item_title =  item.title)}}">{{item.title}} 
+            <i>({{item.category.name}})</i>
+            </a><br>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "mainTemplate.html" %}
+{% block contents %}
+
+<div class="contents">
+    <div class = 'item'>
+        <h3> {{selectedName}}  </h3>
+             <p> Description:   {{items.description}} </p>
+
+ {% if session["username"] != null  %}
+
+        <div class = "adjustItem">
+            <a href="{{url_for('editCategory', item_title = items.title)}}">Edit</a> 
+           |<a href="{{url_for('deleteCategory', item_title = items.title)}}">Delete</a>
+        </div>
+
+{% endif %}
+
+     </div>
+</div>
+
+{% endblock %}
